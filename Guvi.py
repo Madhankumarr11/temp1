@@ -2,7 +2,7 @@ import psycopg2
 
 connection = psycopg2.connect(
     host="localhost",
-    port = "5432",
+    port ='5432',
     user="postgres",
     password="01234"
 )
@@ -10,10 +10,10 @@ connection = psycopg2.connect(
 cursor = connection.cursor()
 
 
-cursor.execute("select version()")
+cursor.execute("SELECT version()")
 
 version = cursor.fetchone()
 
-print(version)
+print("You are connected to - ", version)
 
 connection.close()
