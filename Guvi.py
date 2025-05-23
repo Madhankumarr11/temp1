@@ -1,19 +1,57 @@
 import psycopg2
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT      #to do autocommit in database
+
 
 connection = psycopg2.connect(
-    host="localhost",
-    port ='5432',
-    user="postgres",
-    password="01234"
+    host='localhost',
+    user='postgres',
+    password='01234',
+    database='py_db'
 )
 
+connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+
+#cursor -> intermediator for python and postgres db
 cursor = connection.cursor()
 
+# cursor.execute('select version()')
 
-cursor.execute("SELECT version()")
+# output = cursor.fetchone()
+# print(output)
 
-version = cursor.fetchone()
+# inter = connection.cursor()
 
-print("You are connected to - ", version)
+# inter.execute('select version()')
 
-connection.close()
+# output = inter.fetchone()
+# print(output)
+
+# # Close connection
+# cursor.close()
+# connection.close()
+
+#======================================================================================================================
+
+# cursor.execute('create Database py_db')
+
+#======================================================================================================================
+
+# creating table in 'py_db' database
+
+# cursor.execute ('create table py_table (id int, name varchar(20))')
+
+#======================================================================================================================
+
+#Inserting data in table
+
+# cursor.execute("insert into py_table (id, name) values(1,'madhan')")
+
+#======================================================================================================================
+
+#Read the table data
+
+# cursor.execute('select * from py_table')
+
+# output = cursor.fetchall()
+
+# print(output)
