@@ -1,0 +1,39 @@
+import requests
+import psycopg2
+import time
+
+# PostgreSQL Connection
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password="01234"
+)
+cursor = conn.cursor()
+
+# Table Creation
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS iss_location (
+    id SERIAL PRIMARY KEY,
+    latitude VARCHAR(50),
+    longitude VARCHAR(50),
+    timestamp BIGINT
+)
+""")
+conn.commit()
+
+# Loop to Get & Store ISS Data
+while True:
+    response = requests.get("http://api.open-notify.org/iss-now.json")
+    data = response.json()
+
+    lat = data["iss_position"]["latitude"]
+    lon = data["iss_position"]["longitude"]
+    ts = data["timestamp"]
+
+    cursor.execute("INSERT INTO iss_location (latitude, longitude, timestamp) VALUES (%s, %s, %s)", (lat, lon, ts))
+    conn.commit()
+
+    print(f"Inserted: {lat}, {lon}, {ts}")
+    time.sleep(10)
